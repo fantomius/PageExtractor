@@ -56,10 +56,11 @@ def find_suitable_rects(bin_image):
 	rects = []
 	supricious_rects = []
 	
-	# Не верим слишком большим прямоугольникам
+	# Не верим слишком большим и прямоугольникам прямоугольникам
 	image_square = get_rect_square(get_image_rect(bin_image))
 	good_rect_square_treshold = 0.85 * image_square
 	supricious_rect_square_treshold = 0.95 * image_square
+	min_rect_square = 0.15 * image_square
 
 	# Ищем контуры
 	_, contours, hierarchy = cv2.findContours(bin_image, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
@@ -71,7 +72,11 @@ def find_suitable_rects(bin_image):
 			cnt = cnt.reshape(-1, 2)
 			max_cos = np.max([angle_cos( cnt[i], cnt[(i+1) % 4], cnt[(i+2) % 4] ) for i in range(4)])
 			rect_square = get_rect_square( cnt )
-			if max_cos < 0.3 and good_rect_square_treshold > get_rect_square( cnt ):
+
+			if rect_square < min_rect_square:
+				continue
+
+			if max_cos < 0.3 and good_rect_square_treshold > rect_square:
 				rects.append( cnt )
 			elif max_cos < 0.4 and supricious_rect_square_treshold > rect_square:
 				supricious_rects.append( cnt )
@@ -116,9 +121,9 @@ def find_rects( image ):
 	bin = cv2.dilate(bin, None)
 	rects, supr_rects = find_suitable_rects( bin )
 
-	write_debug_image_with_countours( image,"[RECTS FINDER] OTSU", rects )
+	write_debug_image_with_countours( bin,"[RECTS FINDER] OTSU", rects )
 	if len(supr_rects) > 0:
-		write_debug_image_with_countours( image,"[RECTS FINDER] SUPRICIOUS OTSU", supr_rects )
+		write_debug_image_with_countours( bin,"[RECTS FINDER] SUPRICIOUS OTSU", supr_rects )
 
 	# Если на нашли на бинаризованном ОЦУ изображении прямоугольники, пробуем перебирать различные пороги
 	# в ручную
@@ -135,7 +140,7 @@ def find_rects( image ):
 		if len( supr_rects ) != 0:
 			rects = supr_rects
 		else:
-			rects = get_image_rect( image )
+			rects = [get_image_rect( image )]
 
 	# Выводим найденные контуры
 	write_debug_image_with_countours( image, "[RECTS FINDER] RESULT RECTS", rects )
