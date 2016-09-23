@@ -128,21 +128,24 @@ class DebugShowImageButton(QtGui.QPushButton):
 class GuiDebugHandler(QtGui.QScrollArea):
 	def __init__(self, parent=None):
 		super(GuiDebugHandler, self).__init__(parent)
-		self.setLayout( QtGui.QVBoxLayout() )
+		self.netsted_widget = QtGui.QWidget()
+		self.netsted_widget.setLayout( QtGui.QVBoxLayout() )
+		self.setWidget( self.netsted_widget )
+		self.setWidgetResizable( True )
 
 	def on_new_message(self, message, image):
 		label = QtGui.QLabel( self )
 		label.setText( message )
-		self.layout().addWidget( label )
+		self.netsted_widget.layout().addWidget( label )
 
 		if image is not None:
 			button = DebugShowImageButton( image, self )
-			self.layout().addWidget( button )
+			self.netsted_widget.layout().addWidget( button )
 
 	def clear( self ):
-		for i in reversed(range(self.layout().count())):
-			widget_to_remove = self.layout().itemAt(i).widget()
-			self.layout().removeWidget( widget_to_remove )
+		for i in reversed(range(self.netsted_widget.layout().count())):
+			widget_to_remove = self.netsted_widget.layout().itemAt(i).widget()
+			self.netsted_widget.layout().removeWidget( widget_to_remove )
 			widget_to_remove.setParent( None )
 
 class MainWindow(QtGui.QWidget):
@@ -192,7 +195,7 @@ class MainWindow(QtGui.QWidget):
 
 
 	def on_process( self ):
-		try:
+		#try:
 			LOG.clear()
 			image = cv2.imread( self.image_path_edit.text() )
 			if image is None:
@@ -202,8 +205,8 @@ class MainWindow(QtGui.QWidget):
 			processed_image = self.extractor.process_image( image )
 			self.processed_image.set_image( processed_image )
 
-		except Exception as e:
-			self._excpetion_message_box( "Failed to process image in case of exception", e )
+		#except Exception as e:
+		#	self._excpetion_message_box( "Failed to process image in case of exception", e )
 
 
 	def _excpetion_message_box( self, message, exception ):

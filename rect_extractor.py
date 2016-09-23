@@ -3,22 +3,7 @@ u"""Вырезатель прямоугольника из изображени�
 import numpy as np
 import cv2
 from debug_log import LOG
-
-def order_points(pts):
-	u"""Переупорядочивает точки в прямоугольнике так, чтобы первой был левый верхний угол, второй - правый верхний
-	третьей - правый нижний и четвертой - левый нижний угол"""
-	assert len(pts) == 4, "Invalid points count"
-
-	rect = np.zeros( (4, 2), dtype="float32" )
-	s = pts.sum( axis = 1 )
-	rect[0] = pts[np.argmin(s)]
-	rect[2] = pts[np.argmax(s)]
-
-	diff = np.diff(pts, axis=1)
-	rect[1] = pts[np.argmin(diff)]
-	rect[3] = pts[np.argmax(diff)]
-
-	return rect
+from utils import order_points
 
 def extract_rect(image, pts):
 	u"""Извлекает прямоугольник pts из изображения image, применяя к нему преобразование исправления перспективы"""
