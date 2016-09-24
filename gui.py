@@ -171,7 +171,11 @@ class MainWindow(QtGui.QWidget):
 		image_path_layout.addWidget( self.image_path_edit )
 		image_path_layout.addWidget( process_button )
 		self.layout().addLayout( image_path_layout )
-		
+
+		self.preprocessImag = QtGui.QCheckBox( self )
+		self.preprocessImag.setText( "Use image preprocessing (WARNING! Long operation!)")
+		self.layout().addWidget( self.preprocessImag )
+
 		tabs = QtGui.QTabWidget()
 		self.original_image = ImageWidget( self )
 		self.processed_image = ImageWidget( self )
@@ -195,18 +199,18 @@ class MainWindow(QtGui.QWidget):
 
 
 	def on_process( self ):
-		#try:
+		try:
 			LOG.clear()
 			image = cv2.imread( self.image_path_edit.text() )
 			if image is None:
 				raise Exception( "Failed to open image \"" + self.image_path_edit.text() +"\"" )
 			self.original_image.set_image( image )
 
-			processed_image = self.extractor.process_image( image )
+			processed_image = self.extractor.process_image( image, self.preprocessImag.isChecked() )
 			self.processed_image.set_image( processed_image )
 
-		#except Exception as e:
-		#	self._excpetion_message_box( "Failed to process image in case of exception", e )
+		except Exception as e:
+			self._excpetion_message_box( "Failed to process image in case of exception", e )
 
 
 	def _excpetion_message_box( self, message, exception ):
