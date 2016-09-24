@@ -106,6 +106,7 @@ class ImageWidget(QtGui.QWidget):
 		self.image_view.set_scale( newScale )
 
 class DebugShowImageDialog(QtGui.QDialog):
+	u"""Диалог для показа картинки из DebugLog'а"""
 	def __init__(self, image, parent=None):
 		super(DebugShowImageDialog, self).__init__( parent )
 		self.setLayout( QtGui.QVBoxLayout() )
@@ -115,6 +116,7 @@ class DebugShowImageDialog(QtGui.QDialog):
 		self.layout().addWidget( self.imageWidget )
 
 class DebugShowImageButton(QtGui.QPushButton):
+	u"""Кнопка, которая запоминает картинку, чтобы её можно было посмотреть в последствии"""
 	def __init__(self, cvImage, parent=None):
 		super(DebugShowImageButton, self).__init__( parent )
 		self.image = cvImage.copy()
@@ -126,6 +128,7 @@ class DebugShowImageButton(QtGui.QPushButton):
 		image_view.exec_()
 
 class GuiDebugHandler(QtGui.QScrollArea):
+	u"""Debug Handler для Debug Log'а, реализованный через ScrollArea"""
 	def __init__(self, parent=None):
 		super(GuiDebugHandler, self).__init__(parent)
 		self.netsted_widget = QtGui.QWidget()
@@ -149,6 +152,7 @@ class GuiDebugHandler(QtGui.QScrollArea):
 			widget_to_remove.setParent( None )
 
 class MainWindow(QtGui.QWidget):
+	u"""Главное окно приложения"""
 	def __init__(self, parent=None):
 		super(MainWindow, self).__init__(parent)
 

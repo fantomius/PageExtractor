@@ -56,7 +56,7 @@ def find_suitable_rects(bin_image):
 	rects = []
 	supricious_rects = []
 	
-	# Не верим слишком большим и прямоугольникам прямоугольникам
+	# Считаем отсечения слишком больших и маленьких четырехугольников
 	image_square = get_rect_square(get_image_rect(bin_image))
 	good_rect_square_treshold = 0.85 * image_square
 	supricious_rect_square_treshold = 0.95 * image_square
@@ -156,9 +156,6 @@ def find_document_rect( image ):
 	squares = [get_rect_square(r) for r in rects]
 	max_index = squares.index( max( squares ) )
 
-	if LOG.is_enabled():
-		image_copy = image.copy()
-		cv2.drawContours( image_copy, [rects[max_index]], -1, (0, 255, 0), 3 )
-		LOG.write( "[RECTS FINDER] finded document rect", image_copy )
+	write_debug_image_with_countours( image, "[RECTS FINDER] finded document rect", [rects[max_index]] )
 
 	return rects[max_index]

@@ -6,6 +6,7 @@ import cv2
 from debug_log import LOG
 
 def auto_contrast(image):
+	u"""Повышение контраста и яркости изображения"""
 	result = []
 	for img in cv2.split( image ):
 		# Повышаем контрастность
@@ -15,6 +16,7 @@ def auto_contrast(image):
 	return cv2.merge( result )
 
 def sharpen(image):
+	u"""Исправление небольших размытий"""
 	result = []
 	for img in cv2.split( image ):
 		blured = cv2.Laplacian( img, cv2.CV_8U )
@@ -23,6 +25,7 @@ def sharpen(image):
 	return cv2.merge( result )
 
 def preprocess_image( image ):
+	u"""Предобработка изображения"""
 	result = image
 
 	result = auto_contrast( result )
