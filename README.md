@@ -1,10 +1,10 @@
 # PageExtractor
-Приложение для выделения страницы текста с фотографии
+Приложение для выделения документа с фотографии
 <br/>
 # Установка
 Программа написана на Python 3 и зависит от следующих компонент:<br/>
 1. numpy и PyQt4 (рекомендуется ставить дистрибутив Anaconda отсюда - https://www.continuum.io/downloads).<br/>
-2. Нужен OpenCV для Python3. Скачать .whl отсюда: http://www.lfd.uci.edu/~gohlke/pythonlibs/#opencv,
+2. Нужен OpenCV2 для Python3. Скачать .whl отсюда: http://www.lfd.uci.edu/~gohlke/pythonlibs/#opencv,
 установить при помощи pip install {путь_к_whl_файлу}<br/>
 <br/>
 # Запуск
