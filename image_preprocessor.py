@@ -22,7 +22,6 @@ def sharpen(image):
 
 	return cv2.merge( result )
 
-
 def preprocess_image( image ):
 	result = image
 
